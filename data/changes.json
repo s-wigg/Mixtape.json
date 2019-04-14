@@ -1,0 +1,40 @@
+{
+  "add_song_to_playlist": [
+    {
+      "playlist_id": "1",
+      "song_id": "1"
+    },
+    {
+      "playlist_id": "1",
+      "artist": "Imagine Dragons",
+      "title": "Whatever It Takes"
+    }
+  ],
+  "add_playlist_for_user": [
+    {
+      "user_name": "Seyyit Nedim",
+      "song_ids": ["1", "6"]
+    },
+    {
+      "user_name": "Ryo Daiki",
+      "songs": [
+        {
+          "artist": "Lauv",
+          "title": "I Like Me Better"
+        },
+        {
+          "artist": "NF",
+          "title": "Let You Down"
+        }
+      ]
+    }
+  ],
+  "remove_playlist": [
+    {
+      "playlist_id": "2"
+    },
+    {
+      "user_id": "7"
+    }
+  ]
+}
