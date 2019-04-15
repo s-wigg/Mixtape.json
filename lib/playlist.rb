@@ -8,4 +8,12 @@ class Playlist
     @song_ids = json["song_ids"] || json[:song_ids]
   end
 
+  def playlist_to_json
+    json_playlist = {}
+    json_playlist["user_id"] = @user_id
+    json_playlist["id"] = @id
+    json_playlist["song_ids"] = @song_ids
+    return json_playlist
+  end
+
 end

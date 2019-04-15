@@ -42,4 +42,23 @@ class Mixtape
     @songs.select { |song| song.title == song_title }.first
   end
 
+  def mixtape_to_json
+    converted_mixtape = {}
+
+    converted_mixtape["users"] = []
+    @users.each do |u|
+      converted_mixtape["users"] << u.user_to_json
+    end
+
+    converted_mixtape["playlists"] = []
+    @playlists.each do |pl|
+      converted_mixtape["playlists"] << pl.playlist_to_json
+    end
+
+    converted_mixtape["songs"] = []
+    @songs.each do |s|
+      converted_mixtape["songs"] << s.song_to_json
+    end
+    return converted_mixtape
+  end
 end

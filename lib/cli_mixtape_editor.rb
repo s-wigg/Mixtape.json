@@ -9,24 +9,27 @@ class Cli_mixtape_editor
   def run
     mixtape_json = convert_to_json(ARGV[0])
     changes_file = convert_to_json(ARGV[1])
-    output_file_destination = ARGV[2]
+    @output_file_destination = ARGV[2]
 
     @mix = Mixtape.new(mixtape_json)
     @changes = Change.new(changes_file, @mix)
 
     update_mixtape
+
+    write_updated_mixtape
   end
 
   def convert_to_json(file)
     raise "Error: File #{file} is empty" if File.empty?(file)
+
     parsed_json = JSON.parse(File.read(file))
+
     rescue JSON::ParserError => e
       raise "#{file} is invalid JSON and cannot be parsed #{e}"
     return parsed_json
   end
 
   def update_mixtape
-
     @changes.add_playlist_for_user.each do |add_playlist|
       @mix.playlists << Playlist.new(add_playlist)
     end
@@ -42,6 +45,9 @@ class Cli_mixtape_editor
   end
 
   def write_updated_mixtape
-
+    File.open(@output_file_destination, "w+") do |f|
+      f.write(@mix.mixtape_to_json.to_json)
+    end
   end
+
 end

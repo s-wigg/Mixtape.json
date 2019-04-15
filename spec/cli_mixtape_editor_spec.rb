@@ -1,7 +1,6 @@
 require "cli_mixtape_editor"
 require "change"
 require 'mixtape'
-require 'pry'
 
 describe Cli_mixtape_editor do
     before do
