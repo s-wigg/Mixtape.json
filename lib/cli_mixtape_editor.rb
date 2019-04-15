@@ -4,7 +4,7 @@ require_relative 'change'
 
 class Cli_mixtape_editor
 
-  attr_reader :mix
+  attr_accessor :mix, :changes
 
   def run
     mixtape_json = convert_to_json(ARGV[0])
@@ -26,13 +26,14 @@ class Cli_mixtape_editor
   end
 
   def update_mixtape
-    @changes.add_song_to_playlist.each do |add_song|
-      playlist_to_update = @mix.playlists.select { |playlist| playlist.id == add_song[:playlist_id] }.first
-      playlist_to_update.song_ids << add_song[:song_id]
-    end
 
     @changes.add_playlist_for_user.each do |add_playlist|
       @mix.playlists << Playlist.new(add_playlist)
+    end
+
+    @changes.add_song_to_playlist.each do |add_song|
+      playlist_to_update = @mix.find_playlist_by_id(add_song[:playlist_id])
+      playlist_to_update.song_ids << add_song[:song_id]
     end
 
     @changes.remove_playlists.each do |playlist_to_remove|

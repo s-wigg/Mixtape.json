@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-# may want to delete this??
-#$LOAD_PATH.unshift("#{File.dirname(__FILE__)}/../lib")
 require "bundler/setup"
 require "cli_mixtape_editor"
 

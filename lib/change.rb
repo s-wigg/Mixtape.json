@@ -21,7 +21,8 @@ class Change
       raise "Invalid Song to add to Playlist" unless valid_song_inputs?(change)
 
       if change["title"]
-        song = @mix.songs.select { |s| s.title == change["title"] }.first
+        song = @mix.find_song_by_title(change["title"])
+
         sanitized_changes << {
           playlist_id: change["playlist_id"],
           song_id: song.id
@@ -53,18 +54,20 @@ class Change
     new_playlists.each do |playlist|
       raise "Invalid Playlist to Add" unless valid_playlist_input?(playlist)
 
+      user_id = @mix.find_user_by_name(playlist["user_name"]).user_id
+
       if playlist["song_ids"]
         sanitized_playlists << {
-          user_name: playlist["user_name"],
+          user_id: user_id.to_s,
           song_ids:  playlist["song_ids"],
-          id: current_num_of_playlist + i
+          id: (current_num_of_playlist + i).to_s
         }
       elsif playlist["songs"]
         song_ids = collect_song_ids(playlist["songs"])
         sanitized_playlists << {
-          user_name: playlist["user_name"],
+          user_id: user_id.to_s,
           song_ids:  song_ids,
-          id: current_num_of_playlist + i
+          id: (current_num_of_playlist + i).to_s
         }
       end
       i += 1
@@ -76,7 +79,7 @@ class Change
     song_ids = []
 
     list_of_songs.each do |find_song|
-      song_to_add = @mix.songs.select { |song| song.title == find_song["title"] }.first
+      song_to_add = @mix.find_song_by_title(find_song["title"])
       song_ids << song_to_add.id
     end
     return song_ids
@@ -101,8 +104,9 @@ class Change
           playlist_id: removal["playlist_id"]
         }
       elsif removal["user_id"]
-        user = @mix.users.select { |u| u.user_id == removal["user_id"] }.first
-        playlist = @mix.playlists.select { |pl| pl.user_id == user.user_id }.first
+        user = @mix.find_user_by_id(removal["user_id"])
+        playlist = @mix.find_playlist_by_user_id(user.user_id)
+
         if playlist
           removal_list << {
             playlist_id: playlist.id
