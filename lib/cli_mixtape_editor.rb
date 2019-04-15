@@ -46,7 +46,7 @@ class Cli_mixtape_editor
 
   def write_updated_mixtape
     File.open(@output_file_destination, "w+") do |f|
-      f.write(@mix.mixtape_to_json.to_json)
+      f.write(JSON.pretty_generate(@mix.mixtape_to_json))
     end
   end
 
